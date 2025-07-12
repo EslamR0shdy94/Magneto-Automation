@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "https://testng.org/testng-1.1.dtd" >
+
 <suite name="AutomationSuite" parallel="false" verbose="2">
+    <listeners>
+        <listener class-name="io.qameta.allure.testng.AllureTestNg"/>
+    </listeners>
     <test name="ProductSearchTest">
         <classes>
             <class name="Tests.ProductSearchTest" />
         </classes>
     </test>
-
     <test name="AddToCartTest">
         <classes>
             <class name="Tests.AddToCartTest" />

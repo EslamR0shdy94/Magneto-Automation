@@ -1,58 +1,41 @@
 package Tests;
 
 import Pages.*;
-import utils.WebDriverManager;
 import org.testng.Assert;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
-
+import io.qameta.allure.*;
 import static org.testng.Assert.assertTrue;
 
-public class AddToCartTest {
+public class AddToCartTest extends BaseTest {
     private static final String PRODUCT_URL = "https://magento.softwaretestingboard.com/hero-hoodie.html";
     private static final String EXPECTED_PRICE = "$54.00";
 
-    @BeforeClass
-    public void setup() {
-        WebDriverManager.getDriver().get(PRODUCT_URL);
-    }
-
+    @Epic("Add To cart Module")
+    @Feature("Cart Feature")
+    @Story("add to cart")
+    @Description("Verify that user can add product to cart and delete it")
     @Test
     public void testAddToCartAndValidation() {
-        ProductPage productPage = new ProductPage(WebDriverManager.getDriver());
-        HomePage homePage = new HomePage(WebDriverManager.getDriver());
+        driver.get(PRODUCT_URL);
+        ProductPage productPage = new ProductPage(driver);
 
-        // 1. Select options and add to cart
         productPage.selectSizeAndColor();
         productPage.addToCart();
 
-        // 2. Verify cart counter
-        Assert.assertEquals(productPage.getCartItemCount(), 1, "Cart count should be 1");
-
-        // 3. Navigate to cart and verify item
+        Assert.assertEquals(productPage.getCartItemCount(), 1);
         productPage.navigateToCart();
-        CartPage cartPage = new CartPage(WebDriverManager.getDriver());
 
-        assertTrue(cartPage.isItemInCart("Hero Hoodie"), "Item should be in cart");
-        Assert.assertEquals(cartPage.getItemPrice(), EXPECTED_PRICE, "Price should match");
+        CartPage cartPage = new CartPage(driver);
+        assertTrue(cartPage.isItemInCart("Hero Hoodie"));
+        Assert.assertEquals(cartPage.getItemPrice(), EXPECTED_PRICE);
     }
 
     @Test(dependsOnMethods = "testAddToCartAndValidation")
     public void testCartPersistence() {
-        // We are using same browser session, no need to quit or relaunch
-        CartPage cartPage = new CartPage(WebDriverManager.getDriver());
-        WebDriverManager.getDriver().get("https://magento.softwaretestingboard.com/checkout/cart/");
+        driver.get("https://magento.softwaretestingboard.com/checkout/cart/");
+        CartPage cartPage = new CartPage(driver);
 
-        assertTrue(cartPage.isItemInCart("Hero Hoodie"), "Item should persist in cart");
-        Assert.assertEquals(cartPage.getItemPrice(), EXPECTED_PRICE, "Price should persist");
-    }
-
-    @AfterClass
-    public void tearDown() {
-        // Clear cart after all tests done
-        WebDriverManager.getDriver().get("https://magento.softwaretestingboard.com/checkout/cart/");
-        new CartPage(WebDriverManager.getDriver()).clearCart();
-        WebDriverManager.quitDriver();
+        assertTrue(cartPage.isItemInCart("Hero Hoodie"));
+        Assert.assertEquals(cartPage.getItemPrice(), EXPECTED_PRICE);
     }
 }

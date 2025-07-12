@@ -1,41 +1,32 @@
 package Tests;
 
 import Pages.HomePage;
+import io.qameta.allure.*;
 import org.testng.Assert;
-import utils.WebDriverManager;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-public class ProductSearchTest {
-    @BeforeMethod
-    public void setup() {
-        WebDriverManager.getDriver().get("https://magento.softwaretestingboard.com/");
-    }
+public class ProductSearchTest extends BaseTest {
 
+    @Epic("search Module")
+    @Feature("search Feature")
+    @Story("search product")
+    @Description("Verify that user can search product and invalid product")
     @Test
     public void testValidProductSearch() {
-        HomePage homePage = new HomePage(WebDriverManager.getDriver());
+        driver.get("https://magento.softwaretestingboard.com/");
+        HomePage homePage = new HomePage(driver);
 
-        // 1. Search for "Hero Hoodie"
         homePage.searchForProduct("Hero Hoodie");
-
-        // 2. Verify the product appears
-        homePage.verifyProductExists("Hero Hoodie");
         boolean isProductFound = homePage.verifyProductExists("Hero Hoodie");
-        Assert.assertTrue(isProductFound, "Expected product 'Hero Hoodie' was not found!");
+        Assert.assertTrue(isProductFound);
     }
+
     @Test
     public void testInvalidProductSearch() {
-        HomePage homePage = new HomePage(WebDriverManager.getDriver());
+        driver.get("https://magento.softwaretestingboard.com/");
+        HomePage homePage = new HomePage(driver);
+
         homePage.searchForProduct("تي شيرت");
-        Assert.assertTrue(
-                homePage.isNoResultsMessageDisplayed(),
-                "Error message should appear for invalid search"
-        );
-    }
-    @AfterMethod
-    public void tearDown() {
-        WebDriverManager.quitDriver();
+        Assert.assertTrue(homePage.isNoResultsMessageDisplayed());
     }
 }

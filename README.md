@@ -69,7 +69,10 @@ mvn clean install
 ```bash
 mvn clean test
 ```
-
+### 📊 Generate Allure Report
+```bash
+allure serve allure-results
+```
 ---
 
 ## 👨‍💻 Author

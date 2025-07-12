@@ -13,6 +13,7 @@ import java.time.Duration;
 
 public class CheckoutPage extends BasePage {
     private final WebDriverWait wait;
+    WebDriver driver;
 
     // ===== SHIPPING INFORMATION ELEMENTS =====
     @FindBy(name = "firstname")
@@ -78,12 +79,14 @@ public class CheckoutPage extends BasePage {
     @FindBy(css = ".message-error.error.message")
     private WebElement generalErrorMessage;
 
+
         // ==================== CONSTRUCTOR ====================
     public CheckoutPage(WebDriver driver) {
         super(driver);
         this.driver = driver;
         this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         PageFactory.initElements(driver, this);
+
     }
 
     // ==================== SHIPPING METHODS ====================

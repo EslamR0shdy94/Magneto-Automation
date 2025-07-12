@@ -30,15 +30,15 @@ public class WebDriverManager {
         }
     }
 
-    // Optional helper: navigate to a URL
-    public static void navigateTo(String url) {
-        getDriver().get(url);
-    }
-
-    // Optional helper: clear cookies between tests
-    public static void clearCookies() {
-        if (driver != null) {
-            driver.manage().deleteAllCookies();
-        }
-    }
+//    // Optional helper: navigate to a URL
+//    public static void navigateTo(String url) {
+//        getDriver().get(url);
+//    }
+//
+//    // Optional helper: clear cookies between tests
+//    public static void clearCookies() {
+//        if (driver != null) {
+//            driver.manage().deleteAllCookies();
+//        }
+//    }
 }
