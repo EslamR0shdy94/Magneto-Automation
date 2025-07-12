@@ -129,9 +129,6 @@ public class CheckoutPage extends BasePage {
         return isDisplayed(emailErrorMessage);
     }
 
-    public String getEmailErrorMessage() {
-        return isDisplayed(emailErrorMessage) ? emailErrorMessage.getText().trim() : "";
-    }
     public void selectFlatRateShipping() {
         wait.until(ExpectedConditions.elementToBeClickable(flatRateRadio));
         if (!flatRateRadio.isSelected()) {
@@ -186,16 +183,12 @@ public class CheckoutPage extends BasePage {
     public void nextpage() {
         wait.until(ExpectedConditions.elementToBeClickable(nextButton));
         nextButton.click();
+        scrollBy(0, 400);
         WebDriverManager.getDriver().get("https://magento.softwaretestingboard.com/checkout/#payment");
     }
-
-    // ==================== VALIDATION METHODS ====================
-    public boolean isPaymentErrorDisplayed() {
-        return (isDisplayed(paymentError) || isDisplayed(generalErrorMessage));
-    }
-
     // ==================== UTILITY ====================
     private boolean isDisplayed(WebElement element) {
+        scrollBy(0, 400);
         try {
             return element != null && element.isDisplayed();
         } catch (Exception e) {

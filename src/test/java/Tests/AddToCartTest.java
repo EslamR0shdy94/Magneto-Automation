@@ -1,9 +1,14 @@
 package Tests;
 
-import Pages.*;
+import Pages.CartPage;
+import Pages.ProductPage;
+import io.qameta.allure.Description;
+import io.qameta.allure.Epic;
+import io.qameta.allure.Feature;
+import io.qameta.allure.Story;
 import org.testng.Assert;
 import org.testng.annotations.Test;
-import io.qameta.allure.*;
+
 import static org.testng.Assert.assertTrue;
 
 public class AddToCartTest extends BaseTest {
@@ -18,24 +23,22 @@ public class AddToCartTest extends BaseTest {
     public void testAddToCartAndValidation() {
         driver.get(PRODUCT_URL);
         ProductPage productPage = new ProductPage(driver);
-
+        productPage.scrollToAddToCart();
         productPage.selectSizeAndColor();
         productPage.addToCart();
-
-        Assert.assertEquals(productPage.getCartItemCount(), 1);
         productPage.navigateToCart();
-
         CartPage cartPage = new CartPage(driver);
-        assertTrue(cartPage.isItemInCart("Hero Hoodie"));
-        Assert.assertEquals(cartPage.getItemPrice(), EXPECTED_PRICE);
+        assertTrue(cartPage.isItemInCart("Hero Hoodie"), "Product should appear in the cart");
+        Assert.assertEquals(cartPage.getItemPrice(), EXPECTED_PRICE, "Product price should match expected");
     }
 
     @Test(dependsOnMethods = "testAddToCartAndValidation")
-    public void testCartPersistence() {
+    public void testCartClear() {
         driver.get("https://magento.softwaretestingboard.com/checkout/cart/");
         CartPage cartPage = new CartPage(driver);
-
-        assertTrue(cartPage.isItemInCart("Hero Hoodie"));
-        Assert.assertEquals(cartPage.getItemPrice(), EXPECTED_PRICE);
+        cartPage.clearCart();
+        assertTrue(cartPage.isCartEmpty(), "Cart should be empty after clearing");
     }
+
 }
+

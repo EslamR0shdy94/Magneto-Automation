@@ -11,21 +11,24 @@ import utils.WebDriverManager;
 public class BaseTest {
     protected WebDriver driver;
 
-    @BeforeMethod(alwaysRun = true)
+    @BeforeClass
     public void setUp() {
         driver = WebDriverManager.getDriver();
-    }
-
-    @AfterMethod(alwaysRun = true)
-    public void tearDown(ITestResult result) {
-        if (result.getStatus() == ITestResult.FAILURE) {
-            takeScreenshot(driver);
-        }
-        WebDriverManager.quitDriver();
     }
 
     @Attachment(value = "Failure Screenshot", type = "image/png")
     public byte[] takeScreenshot(WebDriver driver) {
         return ((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES);
+    }
+
+    @AfterMethod
+    public void captureFailureScreenshot(ITestResult result) {
+        if (result.getStatus() == ITestResult.FAILURE) {
+            takeScreenshot(driver);
+        }
+    }
+    @AfterClass
+    public void tearDown() {
+        WebDriverManager.quitDriver();
     }
 }

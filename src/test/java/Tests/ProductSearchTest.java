@@ -2,9 +2,8 @@ package Tests;
 
 import Pages.HomePage;
 import io.qameta.allure.*;
-import org.testng.Assert;
 import org.testng.annotations.Test;
-
+import static org.testng.Assert.assertTrue;
 public class ProductSearchTest extends BaseTest {
 
     @Epic("search Module")
@@ -18,7 +17,7 @@ public class ProductSearchTest extends BaseTest {
 
         homePage.searchForProduct("Hero Hoodie");
         boolean isProductFound = homePage.verifyProductExists("Hero Hoodie");
-        Assert.assertTrue(isProductFound);
+        assertTrue(isProductFound);
     }
 
     @Test
@@ -27,6 +26,6 @@ public class ProductSearchTest extends BaseTest {
         HomePage homePage = new HomePage(driver);
 
         homePage.searchForProduct("تي شيرت");
-        Assert.assertTrue(homePage.isNoResultsMessageDisplayed());
+        assertTrue(homePage.isNoResultsMessageDisplayed());
     }
 }
